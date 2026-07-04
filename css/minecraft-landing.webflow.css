@@ -71,9 +71,7 @@
 }
 
 .body {
-  overflow: hidden;
   margin-top: 100px;
-  margin-bottom: -500px;
   background-image: url('../images/G-MC-BACK.png');
   background-position: 0px 0px;
   background-size: auto 250vh;
