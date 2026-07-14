@@ -201,6 +201,7 @@
     display:flex;align-items:center;justify-content:center;
     position:relative;
   }
+  .about__frame img{width:100%;height:100%;object-fit:cover;}
   .about__frame span{
     font-size:12px;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;
     text-align:center;padding:0 20px;
@@ -226,50 +227,6 @@
   }
   .founder__name{font-weight:700;font-size:15px;}
   .founder__role{font-size:13px;color:var(--text-dim);}
-
-  /* ---------- Rules / Socials / Vote ---------- */
-  .strip{padding:100px 32px;border-top:1px solid var(--border);}
-  .strip--alt{background:var(--bg-panel-2);}
-  .strip__inner{max-width:1100px;margin:0 auto;}
-  .strip__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:46px;flex-wrap:wrap;}
-  .strip h2{font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:-.01em;}
-  .strip__head p{color:var(--text-muted);font-size:15px;max-width:42ch;}
-
-  .rules-list{display:grid;gap:14px;}
-  .rule{
-    display:flex;gap:18px;align-items:flex-start;
-    padding:20px 22px;border:1px solid var(--border);border-radius:14px;
-    background:rgba(255,255,255,.015);
-  }
-  .rule__num{font-family:var(--display);font-weight:700;color:var(--red);font-size:15px;flex:none;width:26px;}
-  .rule h3{font-size:15px;font-weight:700;margin-bottom:4px;}
-  .rule p{font-size:14px;color:var(--text-muted);}
-
-  .social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-  .social-card{
-    padding:26px 22px;border:1px solid var(--border);border-radius:14px;
-    background:rgba(255,255,255,.015);
-    display:flex;flex-direction:column;gap:14px;
-    transition:border-color .2s ease, transform .2s ease;
-  }
-  .social-card:hover{border-color:var(--red);transform:translateY(-3px);}
-  .social-card svg{width:24px;height:24px;color:var(--ember);}
-  .social-card__name{font-weight:700;font-size:15px;}
-  .social-card__handle{font-size:13px;color:var(--text-dim);}
-
-  .vote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-  .vote-card{
-    padding:24px;border:1px solid var(--border);border-radius:14px;
-    background:rgba(255,255,255,.015);
-    display:flex;align-items:center;justify-content:space-between;gap:14px;
-  }
-  .vote-card__name{font-weight:700;font-size:15px;}
-  .vote-card__streak{font-size:12px;color:var(--text-dim);}
-  .vote-card__btn{
-    padding:9px 16px;border-radius:8px;font-size:13px;font-weight:700;
-    background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;
-    flex:none;
-  }
 
   /* ---------- Footer ---------- */
   .footer{background:var(--bg-footer);border-top:1px solid var(--border);padding:80px 32px 0;}
@@ -305,8 +262,6 @@
     .hero__stage{grid-template-columns:1fr;text-align:center;padding-top:120px;}
     .widget,.widget.widget--discord{justify-self:center;flex-direction:column;text-align:center;}
     .about__inner{grid-template-columns:1fr;}
-    .social-grid{grid-template-columns:repeat(2,1fr);}
-    .vote-grid{grid-template-columns:1fr;}
     .footer__grid{grid-template-columns:1fr;gap:36px;}
     .nav__links{flex-wrap:wrap;justify-content:center;border-radius:20px;}
   }
@@ -319,9 +274,9 @@
   <div class="nav__links">
     <a href="#top">Home</a>
     <a href="#shop">Shop</a>
-    <a href="#socials">Socials</a>
-    <a href="#rules">Rules</a>
-    <a href="#vote" class="is-primary">Vote</a>
+    <a href="socials.html">Socials</a>
+    <a href="rules.html">Rules</a>
+    <a href="vote.html" class="is-primary">Vote</a>
   </div>
 </nav>
 
@@ -382,90 +337,6 @@
   </div>
 </section>
 
-<!-- ================= RULES ================= -->
-<section class="strip strip--alt" id="rules">
-  <div class="strip__inner">
-    <div class="strip__head">
-      <h2>Server rules</h2>
-      <p>Keep it fair for everyone — break these and staff will act.</p>
-    </div>
-    <div class="rules-list">
-      <div class="rule">
-        <span class="rule__num">01</span>
-        <div><h3>No hacked clients or X-ray</h3><p>Any form of cheating results in an immediate ban.</p></div>
-      </div>
-      <div class="rule">
-        <span class="rule__num">02</span>
-        <div><h3>No spawn or base griefing outside raid rules</h3><p>Lifesteal raiding is allowed within claimed hours — check the wiki for details.</p></div>
-      </div>
-      <div class="rule">
-        <span class="rule__num">03</span>
-        <div><h3>Keep chat respectful</h3><p>No hate speech, harassment, or spam in chat or Discord.</p></div>
-      </div>
-      <div class="rule">
-        <span class="rule__num">04</span>
-        <div><h3>No advertising other servers</h3><p>Sharing IPs or referral links gets you muted, then banned.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SOCIALS ================= -->
-<section class="strip" id="socials">
-  <div class="strip__inner">
-    <div class="strip__head">
-      <h2>Follow along</h2>
-      <p>Updates, clips, and community drops happen here first.</p>
-    </div>
-    <div class="social-grid">
-      <a class="social-card" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.4A18 18 0 0 0 15.7 4l-.3.6a13 13 0 0 1 3.9 1.5 15 15 0 0 0-13.9 0A13 13 0 0 1 9.3 4L9 4a18 18 0 0 0-4.6 1.4C1.7 9.7 1 13.9 1.3 18a17 17 0 0 0 5.4 2.7l.7-1.2a11 11 0 0 1-1.7-.8l.4-.3a13 13 0 0 0 11.8 0l.4.3a11 11 0 0 1-1.7.8l.7 1.2A17 17 0 0 0 22.7 18c.4-4.7-.8-8.9-2.4-12.6ZM8.7 15.4c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.8 1.9-1.7 1.9Zm6.6 0c-.9 0-1.7-.9-1.7-1.9s.8-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Z"/></svg>
-        <div class="social-card__name">Discord</div>
-        <div class="social-card__handle">discord.gg/redroot</div>
-      </a>
-      <a class="social-card" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z"/></svg>
-        <div class="social-card__name">YouTube</div>
-        <div class="social-card__handle">@RedRootSMP</div>
-      </a>
-      <a class="social-card" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8a4.3 4.3 0 0 1-2.4-3.5h-3v13a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.6 5.6 0 1 0 4.8 5.5V9.4a7.3 7.3 0 0 0 4.2 1.3V7.6a4.3 4.3 0 0 1-1.8-1.8Z"/></svg>
-        <div class="social-card__name">TikTok</div>
-        <div class="social-card__handle">@redrootsmp</div>
-      </a>
-      <a class="social-card" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3H22l-7 8 8 10h-6.3l-5-6.5L5 21H2l7.6-8.7L2 3h6.4l4.5 6ZM17.7 19h1.7L7.9 4.9H6.1Z"/></svg>
-        <div class="social-card__name">X / Twitter</div>
-        <div class="social-card__handle">@redrootsmp</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= VOTE ================= -->
-<section class="strip strip--alt" id="vote">
-  <div class="strip__inner">
-    <div class="strip__head">
-      <h2>Vote for RedRoot</h2>
-      <p>Every vote unlocks in-game vote crate keys. Vote once per site, every 24 hours.</p>
-    </div>
-    <div class="vote-grid">
-      <div class="vote-card">
-        <div><div class="vote-card__name">Minecraft-MP</div><div class="vote-card__streak">Resets daily</div></div>
-        <a class="vote-card__btn" href="#" target="_blank" rel="noopener">Vote</a>
-      </div>
-      <div class="vote-card">
-        <div><div class="vote-card__name">Minecraft Server List</div><div class="vote-card__streak">Resets daily</div></div>
-        <a class="vote-card__btn" href="#" target="_blank" rel="noopener">Vote</a>
-      </div>
-      <div class="vote-card">
-        <div><div class="vote-card__name">TopG</div><div class="vote-card__streak">Resets daily</div></div>
-        <a class="vote-card__btn" href="#" target="_blank" rel="noopener">Vote</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ================= FOOTER ================= -->
 <footer class="footer" id="shop">
   <div class="footer__grid">
@@ -482,8 +353,8 @@
       <div class="footer__links">
         <a href="#">Terms and Conditions</a>
         <a href="#">Privacy Policy</a>
-        <a href="#rules">Rules</a>
-        <a href="#vote">Vote</a>
+        <a href="rules.html">Rules</a>
+        <a href="vote.html">Vote</a>
       </div>
     </div>
     <div>
