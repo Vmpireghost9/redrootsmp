@@ -2,339 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>RedRoot SMP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0b0908;
-    --bg-panel:#151009;
-    --bg-panel-2:#1d1611;
-    --bg-footer:#211a15;
-    --red:#e6402c;
-    --red-deep:#a8261a;
-    --orange:#ff7f3f;
-    --ember:#ffb454;
-    --text:#ece6dd;
-    --text-muted:#9c8f85;
-    --text-dim:#6d635b;
-    --border:#2c221b;
-    --display:'Space Grotesk', sans-serif;
-    --body:'Inter', sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--body);
-    line-height:1.6;
-    overflow-x:hidden;
-  }
-  a{color:inherit;text-decoration:none;}
-  ul{list-style:none;}
-  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
-  img{max-width:100%;display:block;}
-
-  /* ---------- Nav ---------- */
-  .nav{
-    position:fixed;top:0;left:0;right:0;z-index:100;
-    display:flex;align-items:center;justify-content:center;
-    padding:22px 32px;
-    transition:background .35s ease, padding .35s ease, box-shadow .35s ease;
-  }
-  .nav.scrolled{
-    background:rgba(11,9,8,.86);
-    backdrop-filter:blur(10px);
-    padding:14px 32px;
-    box-shadow:0 1px 0 var(--border);
-  }
-  .nav__links{
-    display:flex;gap:8px;
-    background:rgba(21,16,9,.55);
-    border:1px solid var(--border);
-    padding:6px;
-    border-radius:999px;
-  }
-  .nav__links a{
-    display:flex;align-items:center;gap:8px;
-    font-size:14px;font-weight:600;letter-spacing:.02em;
-    color:var(--text-muted);
-    padding:10px 18px;
-    border-radius:999px;
-    transition:color .2s ease, background .2s ease;
-  }
-  .nav__links a:hover{color:var(--text);background:rgba(255,255,255,.04);}
-  .nav__links a.is-primary{
-    background:linear-gradient(135deg,var(--red),var(--orange));
-    color:#fff;
-  }
-  .nav__links a.is-primary:hover{background:linear-gradient(135deg,var(--orange),var(--red));}
-  .nav__icon{width:15px;height:15px;flex:none;}
-
-  /* ---------- Hero ---------- */
-  .hero{
-    position:relative;
-    min-height:100vh;
-    display:flex;flex-direction:column;
-    isolation:isolate;
-  }
-  .hero__bg{
-    position:absolute;inset:0;z-index:-2;
-    /* Swap this background-image for your own Minecraft screenshot:
-       background-image:url('your-image.jpg'); background-size:cover; background-position:center; */
-    background:
-      radial-gradient(ellipse 60% 45% at 50% 8%, rgba(230,64,44,.16), transparent 70%),
-      linear-gradient(180deg, #171009 0%, #120c08 32%, #0e0a07 60%, #0b0908 100%);
-  }
-  .hero__bg::before{
-    content:'';
-    position:absolute;inset:0;
-    background-image:
-      linear-gradient(rgba(11,9,8,0) 0%, rgba(11,9,8,.4) 70%, var(--bg) 100%),
-      repeating-linear-gradient(115deg, rgba(255,255,255,.015) 0 2px, transparent 2px 90px);
-  }
-  .ember{
-    position:absolute;border-radius:50%;
-    background:radial-gradient(circle, var(--ember), transparent 70%);
-    opacity:0;filter:blur(.3px);
-    animation:rise linear infinite;
-  }
-  @keyframes rise{
-    0%{transform:translateY(0) translateX(0);opacity:0;}
-    8%{opacity:.85;}
-    90%{opacity:.4;}
-    100%{transform:translateY(-620px) translateX(var(--drift,20px));opacity:0;}
-  }
-
-  .hero__stage{
-    flex:1;
-    display:grid;
-    grid-template-columns:1fr auto 1fr;
-    align-items:center;
-    gap:32px;
-    max-width:1240px;
-    margin:0 auto;
-    width:100%;
-    padding:140px 32px 80px;
-  }
-
-  /* Side widgets (IP / Discord) */
-  .widget{
-    justify-self:end;
-    display:flex;align-items:center;gap:16px;
-    position:relative;
-  }
-  .widget.widget--discord{justify-self:start;flex-direction:row-reverse;text-align:right;}
-  .widget__text{display:flex;flex-direction:column;gap:2px;}
-  .widget__count{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);}
-  .widget__ip{font-family:var(--display);font-weight:600;font-size:17px;color:var(--text);}
-  .widget__btn{
-    width:56px;height:56px;flex:none;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    background:var(--bg-panel);
-    border:1px solid var(--border);
-    color:var(--text);
-    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-    position:relative;
-  }
-  .widget__btn svg{width:22px;height:22px;}
-  .widget:hover .widget__btn{
-    border-color:var(--red);
-    box-shadow:0 0 0 6px rgba(230,64,44,.08);
-    transform:scale(1.05);
-  }
-  .widget__tooltip{
-    position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(4px);
-    background:#0e0a07;border:1px solid var(--border);
-    padding:6px 12px;border-radius:8px;
-    font-size:12px;font-weight:600;color:var(--text-muted);
-    white-space:nowrap;opacity:0;pointer-events:none;
-    transition:opacity .18s ease, transform .18s ease;
-  }
-  .widget:hover .widget__tooltip{opacity:1;transform:translateX(-50%) translateY(0);}
-
-  /* Center logo */
-  .brand{
-    display:flex;flex-direction:column;align-items:center;gap:18px;
-  }
-  .brand__mark{width:132px;height:132px;filter:drop-shadow(0 0 34px rgba(230,64,44,.35));}
-  .brand__word{
-    font-family:var(--display);font-weight:700;
-    font-size:44px;letter-spacing:-.01em;
-    background:linear-gradient(135deg,#fff 20%, var(--ember) 55%, var(--red) 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .brand__tag{font-size:13px;color:var(--text-dim);letter-spacing:.14em;text-transform:uppercase;font-weight:600;}
-
-  /* IP copied popup */
-  .toast{
-    position:fixed;left:50%;bottom:44px;transform:translateX(-50%) translateY(20px);
-    background:#12100c;border:1px solid var(--border);
-    padding:14px 22px;border-radius:12px;
-    display:flex;align-items:center;gap:12px;
-    font-weight:600;font-size:14px;
-    opacity:0;pointer-events:none;
-    transition:opacity .25s ease, transform .25s ease;
-    z-index:200;
-    box-shadow:0 12px 30px rgba(0,0,0,.4);
-  }
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-  .toast__check{
-    width:22px;height:22px;border-radius:50%;
-    background:linear-gradient(135deg,var(--red),var(--orange));
-    display:flex;align-items:center;justify-content:center;flex:none;
-  }
-  .toast__check svg{width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none;
-    stroke-dasharray:20;stroke-dashoffset:20;
-  }
-  .toast.show .toast__check svg{animation:draw .35s ease .05s forwards;}
-  @keyframes draw{to{stroke-dashoffset:0;}}
-
-  /* ---------- About ---------- */
-  .about{
-    background:var(--bg-panel);
-    padding:110px 32px;
-    border-top:1px solid var(--border);
-  }
-  .about__inner{
-    max-width:1100px;margin:0 auto;
-    display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center;
-  }
-  .about__frame{
-    border-radius:18px;overflow:hidden;border:1px solid var(--border);
-    aspect-ratio:16/10;
-    background:linear-gradient(160deg,#241a12,#120d09);
-    display:flex;align-items:center;justify-content:center;
-    position:relative;
-  }
-  .about__frame span{
-    font-size:12px;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;
-    text-align:center;padding:0 20px;
-  }
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:10px;
-    font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--ember);margin-bottom:18px;
-  }
-  .eyebrow::before{content:'';width:20px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--red),var(--orange));}
-  .about h2{
-    font-family:var(--display);font-size:34px;font-weight:700;margin-bottom:20px;letter-spacing:-.01em;
-  }
-  .about p{color:var(--text-muted);font-size:16px;max-width:46ch;}
-  .founder{
-    display:flex;align-items:center;gap:14px;margin-top:36px;padding-top:28px;border-top:1px solid var(--border);
-  }
-  .founder__avatar{
-    width:46px;height:46px;border-radius:50%;
-    background:linear-gradient(135deg,var(--red),var(--orange));
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--display);font-weight:700;color:#fff;font-size:16px;
-  }
-  .founder__name{font-weight:700;font-size:15px;}
-  .founder__role{font-size:13px;color:var(--text-dim);}
-
-  /* ---------- Rules / Socials / Vote ---------- */
-  .strip{padding:100px 32px;border-top:1px solid var(--border);}
-  .strip--alt{background:var(--bg-panel-2);}
-  .strip__inner{max-width:1100px;margin:0 auto;}
-  .strip__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:46px;flex-wrap:wrap;}
-  .strip h2{font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:-.01em;}
-  .strip__head p{color:var(--text-muted);font-size:15px;max-width:42ch;}
-
-  .rules-list{display:grid;gap:14px;}
-  .rule{
-    display:flex;gap:18px;align-items:flex-start;
-    padding:20px 22px;border:1px solid var(--border);border-radius:14px;
-    background:rgba(255,255,255,.015);
-  }
-  .rule__num{font-family:var(--display);font-weight:700;color:var(--red);font-size:15px;flex:none;width:26px;}
-  .rule h3{font-size:15px;font-weight:700;margin-bottom:4px;}
-  .rule p{font-size:14px;color:var(--text-muted);}
-
-  .social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-  .social-card{
-    padding:26px 22px;border:1px solid var(--border);border-radius:14px;
-    background:rgba(255,255,255,.015);
-    display:flex;flex-direction:column;gap:14px;
-    transition:border-color .2s ease, transform .2s ease;
-  }
-  .social-card:hover{border-color:var(--red);transform:translateY(-3px);}
-  .social-card svg{width:24px;height:24px;color:var(--ember);}
-  .social-card__name{font-weight:700;font-size:15px;}
-  .social-card__handle{font-size:13px;color:var(--text-dim);}
-
-  .vote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-  .vote-card{
-    padding:24px;border:1px solid var(--border);border-radius:14px;
-    background:rgba(255,255,255,.015);
-    display:flex;align-items:center;justify-content:space-between;gap:14px;
-  }
-  .vote-card__name{font-weight:700;font-size:15px;}
-  .vote-card__streak{font-size:12px;color:var(--text-dim);}
-  .vote-card__btn{
-    padding:9px 16px;border-radius:8px;font-size:13px;font-weight:700;
-    background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;
-    flex:none;
-  }
-
-  /* ---------- Footer ---------- */
-  .footer{background:var(--bg-footer);border-top:1px solid var(--border);padding:80px 32px 0;}
-  .footer__grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:60px;padding-bottom:60px;}
-  .footer h3{font-family:var(--display);font-size:19px;font-weight:700;display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;}
-  .dash{width:34px;height:5px;border-radius:4px;background:linear-gradient(90deg,var(--red),var(--orange));}
-  .footer p{color:var(--text-muted);font-size:14px;margin-bottom:18px;max-width:32ch;}
-  .ip-box{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    border:1px solid var(--border);border-radius:10px;padding:12px 16px;
-    background:rgba(0,0,0,.2);
-  }
-  .ip-box span{font-family:var(--display);font-weight:600;font-size:14px;}
-  .ip-box button{color:var(--ember);font-size:13px;font-weight:700;}
-  .footer__links{display:flex;flex-direction:column;gap:10px;}
-  .footer__links a{font-size:14px;color:var(--text-muted);transition:color .2s ease;}
-  .footer__links a:hover{color:var(--text);}
-  .shop-btn{
-    display:inline-flex;align-items:center;gap:10px;
-    margin-top:6px;padding:12px 20px;border-radius:10px;
-    background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;
-    font-weight:700;font-size:14px;
-  }
-  .footer__bottom{
-    max-width:1100px;margin:0 auto;
-    border-top:1px solid var(--border);
-    padding:26px 0;
-    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
-    font-size:13px;color:var(--text-dim);
-  }
-
-  @media (max-width:860px){
-    .hero__stage{grid-template-columns:1fr;text-align:center;padding-top:120px;}
-    .widget,.widget.widget--discord{justify-self:center;flex-direction:column;text-align:center;}
-    .about__inner{grid-template-columns:1fr;}
-    .social-grid{grid-template-columns:repeat(2,1fr);}
-    .vote-grid{grid-template-columns:1fr;}
-    .footer__grid{grid-template-columns:1fr;gap:36px;}
-    .nav__links{flex-wrap:wrap;justify-content:center;border-radius:20px;}
-  }
-</style>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <!-- ================= NAV ================= -->
 <nav class="nav" id="nav">
   <div class="nav__links">
-    <a href="#top">Home</a>
-    <a href="#shop">Shop</a>
-    <a href="#socials">Socials</a>
-    <a href="#rules">Rules</a>
-    <a href="#vote" class="is-primary">Vote</a>
+    <a href="index.html" class="is-active">Home</a>
+    <a href="#" target="_blank" rel="noopener">Shop</a>
+    <a href="socials.html">Socials</a>
+    <a href="rules.html">Rules</a>
+    <a href="vote.html" class="is-primary">Vote</a>
   </div>
 </nav>
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
   <div class="hero__bg" id="heroBg"></div>
+  <!-- To use your own screenshot as the backdrop, drop it in /assets (e.g. server-bg.jpg)
+       and uncomment the background-image line inside .hero__bg in assets/style.css -->
 
   <div class="hero__stage">
     <!-- Play widget -->
@@ -343,33 +34,15 @@
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       </div>
       <div class="widget__text">
-        <span class="widget__count">198 players online</span>
-        <span class="widget__ip">play.redrootsmp.net</span>
+        <span class="widget__count" id="playerCount">198 players online</span>
+        <span class="widget__ip" data-server-ip>play.redrootsmp.net</span>
       </div>
       <div class="widget__tooltip">Click to copy IP</div>
     </div>
 
-    <!-- Center logo -->
+    <!-- Center logo — swap assets/logo.png for your own logo file -->
     <div class="brand">
-      <svg class="brand__mark" viewBox="0 0 140 150" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ff7f3f"/>
-            <stop offset="55%" stop-color="#e6402c"/>
-            <stop offset="100%" stop-color="#7c1810"/>
-          </linearGradient>
-          <linearGradient id="shieldEdge" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#ffd4a8" stop-opacity=".9"/>
-            <stop offset="100%" stop-color="#ffd4a8" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <path d="M70 4 L132 26 V70 C132 108 106 134 70 146 C34 134 8 108 8 70 V26 Z" fill="url(#shieldGrad)" stroke="#3a0f0a" stroke-width="3"/>
-        <path d="M70 4 L132 26 V70 C132 108 106 134 70 146" fill="none" stroke="url(#shieldEdge)" stroke-width="3"/>
-        <path d="M70 14 L122 32 V70 C122 102 100 124 70 135 C40 124 18 102 18 70 V32 Z" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="2"/>
-        <text x="70" y="94" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="64" fill="#fff8ee">R</text>
-      </svg>
-      <div class="brand__word">RedRoot</div>
-      <div class="brand__tag">Java &amp; Bedrock Lifesteal SMP</div>
+      <img class="brand__logo" src="assets/logo.png" alt="RedRoot SMP logo">
     </div>
 
     <!-- Discord widget -->
@@ -378,8 +51,8 @@
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.4A18 18 0 0 0 15.7 4l-.3.6a13 13 0 0 1 3.9 1.5 15 15 0 0 0-13.9 0A13 13 0 0 1 9.3 4L9 4a18 18 0 0 0-4.6 1.4C1.7 9.7 1 13.9 1.3 18a17 17 0 0 0 5.4 2.7l.7-1.2a11 11 0 0 1-1.7-.8l.4-.3a13 13 0 0 0 11.8 0l.4.3a11 11 0 0 1-1.7.8l.7 1.2A17 17 0 0 0 22.7 18c.4-4.7-.8-8.9-2.4-12.6ZM8.7 15.4c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.8 1.9-1.7 1.9Zm6.6 0c-.9 0-1.7-.9-1.7-1.9s.8-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Z"/></svg>
       </div>
       <div class="widget__text">
-        <span class="widget__count">1,556 users online</span>
-        <span class="widget__ip">discord.gg/redroot</span>
+        <span class="widget__count" id="discordCount">1,556 users online</span>
+        <span class="widget__ip" data-discord-invite>discord.gg/redroot</span>
       </div>
       <div class="widget__tooltip">Click to join</div>
     </div>
@@ -407,90 +80,6 @@
   </div>
 </section>
 
-<!-- ================= RULES ================= -->
-<section class="strip strip--alt" id="rules">
-  <div class="strip__inner">
-    <div class="strip__head">
-      <h2>Server rules</h2>
-      <p>Keep it fair for everyone — break these and staff will act.</p>
-    </div>
-    <div class="rules-list">
-      <div class="rule">
-        <span class="rule__num">01</span>
-        <div><h3>No hacked clients or X-ray</h3><p>Any form of cheating results in an immediate ban.</p></div>
-      </div>
-      <div class="rule">
-        <span class="rule__num">02</span>
-        <div><h3>No spawn or base griefing outside raid rules</h3><p>Lifesteal raiding is allowed within claimed hours — check the wiki for details.</p></div>
-      </div>
-      <div class="rule">
-        <span class="rule__num">03</span>
-        <div><h3>Keep chat respectful</h3><p>No hate speech, harassment, or spam in chat or Discord.</p></div>
-      </div>
-      <div class="rule">
-        <span class="rule__num">04</span>
-        <div><h3>No advertising other servers</h3><p>Sharing IPs or referral links gets you muted, then banned.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SOCIALS ================= -->
-<section class="strip" id="socials">
-  <div class="strip__inner">
-    <div class="strip__head">
-      <h2>Follow along</h2>
-      <p>Updates, clips, and community drops happen here first.</p>
-    </div>
-    <div class="social-grid">
-      <a class="social-card" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.4A18 18 0 0 0 15.7 4l-.3.6a13 13 0 0 1 3.9 1.5 15 15 0 0 0-13.9 0A13 13 0 0 1 9.3 4L9 4a18 18 0 0 0-4.6 1.4C1.7 9.7 1 13.9 1.3 18a17 17 0 0 0 5.4 2.7l.7-1.2a11 11 0 0 1-1.7-.8l.4-.3a13 13 0 0 0 11.8 0l.4.3a11 11 0 0 1-1.7.8l.7 1.2A17 17 0 0 0 22.7 18c.4-4.7-.8-8.9-2.4-12.6ZM8.7 15.4c-.9 0-1.7-.9-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.8 1.9-1.7 1.9Zm6.6 0c-.9 0-1.7-.9-1.7-1.9s.8-1.9 1.7-1.9 1.7.9 1.7 1.9-.7 1.9-1.7 1.9Z"/></svg>
-        <div class="social-card__name">Discord</div>
-        <div class="social-card__handle">discord.gg/redroot</div>
-      </a>
-      <a class="social-card" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z"/></svg>
-        <div class="social-card__name">YouTube</div>
-        <div class="social-card__handle">@RedRootSMP</div>
-      </a>
-      <a class="social-card" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8a4.3 4.3 0 0 1-2.4-3.5h-3v13a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.6 5.6 0 1 0 4.8 5.5V9.4a7.3 7.3 0 0 0 4.2 1.3V7.6a4.3 4.3 0 0 1-1.8-1.8Z"/></svg>
-        <div class="social-card__name">TikTok</div>
-        <div class="social-card__handle">@redrootsmp</div>
-      </a>
-      <a class="social-card" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3H22l-7 8 8 10h-6.3l-5-6.5L5 21H2l7.6-8.7L2 3h6.4l4.5 6ZM17.7 19h1.7L7.9 4.9H6.1Z"/></svg>
-        <div class="social-card__name">X / Twitter</div>
-        <div class="social-card__handle">@redrootsmp</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= VOTE ================= -->
-<section class="strip strip--alt" id="vote">
-  <div class="strip__inner">
-    <div class="strip__head">
-      <h2>Vote for RedRoot</h2>
-      <p>Every vote unlocks in-game vote crate keys. Vote once per site, every 24 hours.</p>
-    </div>
-    <div class="vote-grid">
-      <div class="vote-card">
-        <div><div class="vote-card__name">Minecraft-MP</div><div class="vote-card__streak">Resets daily</div></div>
-        <a class="vote-card__btn" href="#" target="_blank" rel="noopener">Vote</a>
-      </div>
-      <div class="vote-card">
-        <div><div class="vote-card__name">Minecraft Server List</div><div class="vote-card__streak">Resets daily</div></div>
-        <a class="vote-card__btn" href="#" target="_blank" rel="noopener">Vote</a>
-      </div>
-      <div class="vote-card">
-        <div><div class="vote-card__name">TopG</div><div class="vote-card__streak">Resets daily</div></div>
-        <a class="vote-card__btn" href="#" target="_blank" rel="noopener">Vote</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ================= FOOTER ================= -->
 <footer class="footer" id="shop">
   <div class="footer__grid">
@@ -498,7 +87,7 @@
       <h3><span class="dash"></span>Play Now</h3>
       <p>Enter the IP below to start playing!</p>
       <div class="ip-box">
-        <span>play.redrootsmp.net</span>
+        <span data-server-ip>play.redrootsmp.net</span>
         <button id="footerCopy">Copy</button>
       </div>
     </div>
@@ -507,8 +96,8 @@
       <div class="footer__links">
         <a href="#">Terms and Conditions</a>
         <a href="#">Privacy Policy</a>
-        <a href="#rules">Rules</a>
-        <a href="#vote">Vote</a>
+        <a href="rules.html">Rules</a>
+        <a href="vote.html">Vote</a>
       </div>
     </div>
     <div>
@@ -532,54 +121,6 @@
   <span>IP copied — now go join the server!</span>
 </div>
 
-<script>
-  // Sticky nav background on scroll
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  });
-
-  // Floating embers in hero
-  const bg = document.getElementById('heroBg');
-  for (let i = 0; i < 24; i++) {
-    const e = document.createElement('div');
-    e.className = 'ember';
-    const size = 2 + Math.random() * 4;
-    e.style.width = size + 'px';
-    e.style.height = size + 'px';
-    e.style.left = Math.random() * 100 + '%';
-    e.style.bottom = (Math.random() * 20) + '%';
-    e.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
-    e.style.animationDuration = (7 + Math.random() * 8) + 's';
-    e.style.animationDelay = (Math.random() * 10) + 's';
-    bg.appendChild(e);
-  }
-
-  // Toast helper
-  const toast = document.getElementById('toast');
-  let toastTimer;
-  function showToast(msg) {
-    toast.querySelector('span').textContent = msg;
-    toast.classList.remove('show');
-    void toast.offsetWidth; // restart animation
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
-  }
-
-  const SERVER_IP = 'play.redrootsmp.net';
-  const DISCORD_URL = 'https://discord.gg/redroot';
-
-  function copyIP() {
-    navigator.clipboard?.writeText(SERVER_IP).catch(() => {});
-    showToast('IP copied — now go join the server!');
-  }
-
-  document.getElementById('ipWidget').addEventListener('click', copyIP);
-  document.getElementById('footerCopy').addEventListener('click', copyIP);
-  document.getElementById('discordWidget').addEventListener('click', () => {
-    window.open(DISCORD_URL, '_blank', 'noopener');
-  });
-</script>
+<script src="assets/script.js"></script>
 </body>
 </html>
