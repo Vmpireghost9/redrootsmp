@@ -1,0 +1,77 @@
+/*  MADE BY HEIS */
+/*  https://discord.gg/heis */
+/*  DO NOT SELL THIS TEMPLATE */
+
+body {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  background: linear-gradient(to bottom, #111111, #252525, #111111);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  max-width: 600px;
+}
+
+.text-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.icon {
+  width: 80px;
+}
+
+.text {
+  text-align: left;
+}
+
+.small-text {
+  font-size: 18px;
+  color: #bbb;
+  margin: 0;
+}
+
+h1 {
+  color: white;
+  margin: 0;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 10px;
+  text-decoration: none;
+  color: white;
+  border-radius: 30px;
+}
+
+.btn:hover {
+  filter: brightness(85%);
+  transition: 0.3s ease-in-out;
+}
+
+.discord { background: #0b5351; }
+.store { background: #0b5351; }
+.map { background: #0b5351; }
+
+@media only screen and (max-width: 768px) {
+  [class*="col-"] {
+    width: 100%;
+  }
+}
+
+/*  MADE BY HEIS */
+/*  https://discord.gg/heis */
+/*  DO NOT SELL THIS TEMPLATE */
