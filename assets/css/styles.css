@@ -63,8 +63,6 @@ h1 {
 }
 
 .discord { background: #0b5351; }
-.store { background: #0b5351; }
-.map { background: #0b5351; }
 
 @media only screen and (max-width: 768px) {
   [class*="col-"] {
